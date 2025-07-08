@@ -1,0 +1,24 @@
+{
+  "id": null,
+  "uid": "sample-dashboard",
+  "title": "Sample Dashboard",
+  "tags": ["templated"],
+  "timezone": "browser",
+  "schemaVersion": 16,
+  "version": 0,
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Sample Panel",
+      "gridPos": { "x": 0, "y": 0, "w": 24, "h": 9 },
+      "targets": [
+        {
+          "expr": "up",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ]
+    }
+  ]
+}
