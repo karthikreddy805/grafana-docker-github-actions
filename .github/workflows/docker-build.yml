@@ -1,4 +1,4 @@
-name: Build and Push Grafana Docker Image
+name: Build, Push, and Test Grafana Docker Image
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-push-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,3 +21,10 @@ jobs:
 
       - name: Push Docker image
         run: docker push karthikreddy805/grafana:latest
+
+      - name: Run Grafana container (for testing only)
+        run: |
+          docker run -d -p 3000:3000 --name test-grafana karthikreddy805/grafana:latest
+          sleep 10
+          docker ps
+          docker logs test-grafana
