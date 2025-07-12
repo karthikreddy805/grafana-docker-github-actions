@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Delete existing Prometheus container (if any)
+        run: docker rm -f prometheus || true
+
+      - name: Delete existing Grafana container (if any)
+        run: docker rm -f grafana-${GITHUB_RUN_ID} || true
+
       - name: Build Docker image
         run: docker build . -t karthikreddy805/grafana:latest
 
@@ -30,9 +36,13 @@ jobs:
             -v ${{ github.workspace }}/prometheus.yml:/etc/prometheus/prometheus.yml \
             prom/prometheus:latest
             
-      - name: Run Grafana container (for testing only)
+      - name: Run Grafana container (on port 3002)
         run: |
-          docker run -d -p 3002:3000 --name grafana-${GITHUB_RUN_ID} karthikreddy805/grafana:latest          
+          docker run -d \
+            -p 3003:3000 \
+            --name grafana-${GITHUB_RUN_ID} \
+            -v ${{ github.workspace }}/provisioning:/etc/grafana/provisioning \
+            karthikreddy805/grafana:latest
           sleep 10
           docker ps
-          docker logs test-grafana
+          docker logs grafana-${GITHUB_RUN_ID}
