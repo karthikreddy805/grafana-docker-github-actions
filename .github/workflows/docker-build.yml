@@ -21,7 +21,15 @@ jobs:
 
       - name: Push Docker image
         run: docker push karthikreddy805/grafana:latest
-
+        
+      - name: Run Prometheus on host port 9091
+        run: |
+          docker run -d \
+            --name prometheus \
+            -p 9091:9090 \
+            -v ${{ github.workspace }}/prometheus.yml:/etc/prometheus/prometheus.yml \
+            prom/prometheus:latest
+            
       - name: Run Grafana container (for testing only)
         run: |
           docker run -d -p 3001:3000 --name grafana-${GITHUB_RUN_ID} karthikreddy805/grafana:latest          
