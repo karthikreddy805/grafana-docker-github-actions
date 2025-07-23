@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Grafana container (for testing only)
         run: |
-          docker run -d -p 4001:3000 --name grafana-${GITHUB_RUN_ID} karthikreddy805/grafana:latest          
+          docker run -d -p 3000:3000 --name grafana-${GITHUB_RUN_ID} karthikreddy805/grafana:latest          
           sleep 10
           docker ps
           docker logs test-grafana
